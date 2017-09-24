@@ -1,0 +1,89 @@
+@maxMobileWidth: 767px;
+@codeColor: #db5c67;
+@codeBgColor: #fcfafa;
+
+@font-face {
+    font-family: 'Open Sans';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/OpenSans-Regular-webfont.eot');
+    src:
+        local('Open Sans'),
+        local('OpenSans'),
+        url('../fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/OpenSans-Regular-webfont.woff') format('woff'),
+        url('../fonts/OpenSans-Regular-webfont.svg#open_sansregular') format('svg');
+}
+
+@font-face {
+    font-family: 'Open Sans Light';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/OpenSans-Light-webfont.eot');
+    src:
+        local('Open Sans Light'),
+        local('OpenSans Light'),
+        url('../fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/OpenSans-Light-webfont.woff') format('woff'),
+        url('../fonts/OpenSans-Light-webfont.svg#open_sanslight') format('svg');
+}
+
+.before() {
+    font-family: FontAwesome;
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
+    vertical-align: middle;
+}
+
+.before-left() {
+    .before();
+    float: left;
+}
+.before-right() {
+    .before();
+    float: right;
+}
+
+.before-right-chevron() {
+    .before-right();
+    content: "\f104";
+}
+
+.before-left-square() {
+    .before-left;
+    content: "\f0c8";
+}
+
+.before-left-star() {
+    .before-left;
+    content: "\f005";
+}
+
+.before-left-shield() {
+    .before-left;
+    content: "\f132";
+}
+
+.before-left-lock() {
+    .before-left;
+    content: "\f023";
+}
+
+code {
+    background-color: @codeBgColor;
+}
+
+code, code a {
+    color: @codeColor !important;
+}
+
+code a, a code {
+    font-weight: normal !important;
+    text-decoration: underline !important;
+}
+
+code a:hover, a:hover code {
+    font-weight: 700 !important;
+    text-decoration: none !important;
+}

@@ -1,0 +1,113 @@
+<?js
+var returns = obj;
+var self = this;
+var parentReturn = null;
+var hasName = false;
+var hasType = false;
+
+returns.forEach(function (ret, i) {
+    if (ret && (ret.description || ret.name)) {
+        ret.description = ret.description.toString().replace(/<\/?p>/g, '');
+
+        var isNamed = ret.name ? true : false;
+        var name = ret.name || ret.description;
+        var startSpacePos = name.indexOf(' ');
+
+        if (parentReturn !== null && name.indexOf(parentReturn.name + '.') === 0) {
+            ret.name = isNamed ? name.substr(parentReturn.name.length + 1) : name.substr(parentReturn.name.length + 1, startSpacePos - (parentReturn.name.length + 1));
+
+            if (!isNamed) {
+                ret.description = ret.description.substr(startSpacePos + 1);
+
+                if (ret.description.indexOf('- ') === 0) {
+                    ret.description = ret.description.substr(2);
+                }
+            }
+
+            ret.isSubReturns = true;
+            parentReturn.subReturns = parentReturn.subReturns || [];
+            parentReturn.subReturns.push(ret);
+            returns[i] = null;
+        } else if (returns.length > 1 || ret.isSubReturns) {
+            if (!isNamed) {
+                ret.name = ret.description.substr(0, startSpacePos !== -1 ? startSpacePos : ret.description.length);
+                ret.description = startSpacePos !== -1 ? ret.description.substr(startSpacePos + 1) : '';
+
+                if (ret.description.indexOf('- ') === 0) {
+                    ret.description = ret.description.substr(2);
+                }
+            }
+
+            parentReturn = ret;
+        }
+    }
+
+    if (ret.name) {
+        hasName = true;
+    }
+
+    if (ret.type) {
+        hasType = true;
+    }
+});?>
+
+<?js returns.forEach(function(ret) {
+    if (!ret) { return false; }
+
+    if (ret.subReturns || ret.isSubReturns) { ?>
+        <ul class="returns">
+            <li>
+                <?js if (ret.name) { ?>
+                    <code><?js= ret.name ?></code>
+                <?js } else { ?>
+                    Type: <?js= self.partial('type.tmpl', ret.type.names) ?>
+                <?js } ?>
+
+                <?js if (ret.nullable) { ?>
+                    <span class="nullable badge">nullable</span>
+                <?js } ?>
+            </li>
+            <ul class="list-unstyled">
+                <?js if (ret.type && ret.type.names && ret.name) { ?>
+                    <li>Type: <?js= self.partial('type.tmpl', ret.type.names) ?></li>
+                <?js } ?>
+
+                <?js if (ret.description) { ?>
+                    <li><?js= ret.description ?></li>
+                <?js } ?>
+
+                <?js if (ret.subReturns) { ?>
+                    <?js= self.partial('returns.tmpl', ret.subReturns) ?>
+                <?js } ?>
+            </ul>
+        </ul>
+    <?js } else if (returns.length > 1) { ?>
+        <ul class="returns">
+            <?js if (ret.type && ret.type.names) { ?>
+                <li>Type: <?js= self.partial('type.tmpl', ret.type.names) ?></li>
+            <?js } ?>
+
+            <?js if (ret.description) { ?>
+                <li><?js= ret.description ?></li>
+            <?js } ?>
+
+            <?js if (ret.subReturns) { ?>
+                <?js= self.partial('returns.tmpl', ret.subReturns) ?>
+            <?js } ?>
+        </ul>
+    <?js } else { ?>
+        <span class="returns">
+            <?js if (ret.type && ret.type.names) { ?>
+                <?js= self.partial('type.tmpl', ret.type.names) ?>
+            <?js } ?>
+
+            <?js if (ret.description) { ?>
+                <?js= ret.description ?>
+            <?js } ?>
+
+            <?js if (ret.nullable) { ?>
+                <span class="nullable badge">nullable</span>
+            <?js } ?>
+        </span>
+    <?js } ?>
+<?js }); ?>

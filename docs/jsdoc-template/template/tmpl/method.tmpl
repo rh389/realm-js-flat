@@ -1,0 +1,145 @@
+<?js
+var data = obj;
+var self = this;
+
+var getClass = function(node) {
+    if (node.inherited) {
+        return 'inherit';
+    } else if (node.overrides) {
+        return 'override';
+    }
+    return '';
+};
+?>
+
+<div class="doc-member panel panel-default<?js= data.deprecated ? ' deprecated' : '' ?>">
+    <div class="panel-heading" id="<?js= id ?>">
+        <div class="row">
+            <div class="panel-title <?js= getClass(data) ?> <?js= data.access === 'protected' ? 'item-protected' : '' ?> <?js= data.access === 'private' ? 'item-private' : '' ?>">
+                <?js= (kind === 'class' ? 'new ' : '') + '<strong>' + (data.scope === 'static' ? longname : name) + '</strong>' + (kind !== 'event' ? data.signature : '') ?>
+            </div>
+            <?js if (data.attribs) { ?>
+                <div class="panel-attributes">
+                    <?js= data.attribs ?>
+                </div>
+            <?js } else if (data.meta && env.conf.templates.default.outputSourceFiles) { ?>
+                <div class="text-right small heading-meta">
+                    <?js= self.linkto(meta.filename) ?>, <?js= self.linkto(meta.filename, 'line ' + meta.lineno, null, 'line' + meta.lineno) ?>
+                </div>
+            <?js } ?>
+        </div>
+        <div class="row sub-heading">
+            <?js if (data.author && author.length) { ?>
+                <div class="col-sm-4 small">Author:
+                <?js var authors = data.author.map(function(a) {
+                        return self.resolveAuthorLinks(a);
+                    }).join(', '); ?>
+                <?js= authors ?>
+                </div>
+            <?js } else { ?>
+                <div class="col-sm-4"></div>
+            <?js } ?>
+
+            <?js if (data.version) { ?>
+                <div class="col-sm-4 text-center small">Version: <?js=  data.version ?></div>
+            <?js } else { ?>
+                <div class="col-sm-4"></div>
+            <?js } ?>
+
+            <?js if (data.meta && data.attribs && env.conf.templates.default.outputSourceFiles) { ?>
+                <div class="col-sm-4 text-right small">
+                    <?js= self.linkto(meta.filename) ?>, <?js= self.linkto(meta.filename, 'line ' + meta.lineno, null, 'line' + meta.lineno) ?>
+                </div>
+            <?js } else { ?>
+                <div class="col-sm-4"></div>
+            <?js } ?>
+        </div>
+    </div>
+    <div class="panel-body">
+        <?js= this.partial('description.tmpl', data) ?>
+        <?js= this.partial('details.tmpl', data) ?>
+
+        <?js if (data.params && params.length) { ?>
+            <h5><b>Parameters</b>:</h5>
+            <?js= this.partial('params.tmpl', params) ?>
+        <?js } ?>
+
+        <?js if (data['this']) { ?>
+            <b>Scope:</b> <?js= this.linkto(data['this'], data['this']) ?>
+        <?js } ?>
+
+        <?js if (data.fires && fires.length) { ?>
+            <h5><b>Fires</b>:</h5>
+            <ul><?js fires.forEach(function(f) { ?>
+                <li><?js= self.linkto(f, f.replace('event:', '')) ?></li>
+            <?js }); ?></ul>
+        <?js } ?>
+
+        <?js if (data.listens && listens.length) { ?>
+            <h5><b>Listens</b>:</h5>
+            <ul><?js listens.forEach(function(f) { ?>
+                <li><?js= self.linkto(f, f.replace('event:', '')) ?></li>
+            <?js }); ?></ul>
+        <?js } ?>
+
+        <?js if (data.listeners && listeners.length) { ?>
+            <h5><b>Listeners</b>:</h5>
+            <ul><?js listeners.forEach(function(f) { ?>
+                <li><?js= self.linkto(f, f.replace('event:', '')) ?></li>
+            <?js }); ?></ul>
+        <?js } ?>
+
+        <?js if (data.exceptions && exceptions.length) { ?>
+            <h5><b>Throws</b>:</h5>
+            <?js= self.partial('exceptions.tmpl', data.exceptions) ?>
+        <?js } ?>
+
+        <?js if (data.returns && returns.length) {
+            if (returns.length === 1) { ?>
+                <b>Returns</b>:
+            <?js } else { ?>
+                <h5><b>Returns</b>:</h5>
+            <?js } ?>
+
+            <?js= self.partial('returns.tmpl', data.returns) ?>
+        <?js } ?>
+
+        <?js if (data.examples && examples.length) { ?>
+            <?js= this.partial('examples.tmpl', examples) ?>
+        <?js } ?>
+    </div>
+    <?js if (data.copyright || data.license || data.since) { ?>
+        <div class="panel-footer">
+            <div class="row">
+                <?js if (data.copyright) { ?>
+                    <div class="col-sm-4">
+                        <span data-toggle="popover"
+                              title="Copyright"
+                              data-placement="right"
+                              data-content="<?js= data.copyright ?>"
+                              data-trigger="hover"
+                        >
+                        Copyright
+                        </span>
+                    </div>
+                <?js } else { ?>
+                    <div class="col-sm-4"></div>
+                <?js } ?>
+
+                <?js if (data.license) { ?>
+                    <div class="col-sm-4 text-center">
+                        <a href="<?js=  data.license ?>">License</a>
+                    </div>
+                <?js } else { ?>
+                    <div class="col-sm-4"></div>
+                <?js } ?>
+
+                <?js if (data.since) { ?>
+                    <div class="col-sm-4 text-right">Since: <?js=  data.since ?></div>
+                <?js } else { ?>
+                    <div class="col-sm-4"></div>
+                <?js } ?>
+            </div>
+        </div>
+    <?js } ?>
+</div>

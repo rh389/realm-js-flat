@@ -1,0 +1,100 @@
+<?js
+var item = obj;
+var self = this;
+var icon = '<i class="fa fa-code fa-lg"></i>';
+var arrow = '<span class="arrow"></span>';
+
+var getClass = function(node) {
+    if (node.inherited) {
+        return 'inherit';
+    } else if (node.overrides) {
+        return 'override';
+    }
+    return '';
+};
+?>
+<li id="nav-<?js= item.longname.replace('.', '') ?>-item" data-toggle="collapse" data-target="#nav-<?js= item.longname.replace('.', '') ?>" class="collapsed">
+<?js= self.linkto(item.longname, icon + item.name + arrow) ?>
+<ul class="sub-menu collapse" id="nav-<?js= item.longname.replace('.', '') ?>">
+    <?js if (item.constants.length) { ?>
+    <li>
+        <div class="section-header">Constants<span class="badge pull-right"><?js= item.constants.length ?></span></div>
+        <?js item.constants.forEach(function(constant) { ?>
+            <?js= self.linkto(constant.longname, constant.name, getClass(constant)) ?>
+        <?js }) ?>
+    </li>
+    <?js } ?>
+
+    <?js if (item.members.length) { ?>
+    <li>
+        <div class="section-header">Members<span class="badge pull-right"><?js= item.members.length ?></span></div>
+        <?js item.members.forEach(function(opt) { ?>
+            <?js= self.linkto(opt.longname, opt.name, getClass(opt)) ?>
+        <?js }) ?>
+    </li>
+    <?js } ?>
+
+    <?js if (item.privateMembers.length) { ?>
+    <li>
+        <div class="section-header">Private Members<span class="badge pull-right"><?js= item.privateMembers.length ?></span></div>
+        <?js item.privateMembers.forEach(function(privateMember) { ?>
+            <?js= self.linkto(privateMember.longname, privateMember.name, getClass(privateMember)) ?>
+        <?js }) ?>
+    </li>
+    <?js } ?>
+
+    <?js if (item.methods.length) { ?>
+    <li>
+        <div class="section-header">Methods<span class="badge pull-right"><?js= item.methods.length ?></span></div>
+        <?js item.methods.forEach(function(method) { ?>
+            <?js= self.linkto(method.longname, method.name, getClass(method)) ?>
+        <?js }) ?>
+    </li>
+    <?js } ?>
+
+    <?js if (item.privateMethods.length) { ?>
+    <li>
+        <div class="section-header">Private Methods<span class="badge pull-right"><?js= item.privateMethods.length ?></span></div>
+        <?js item.privateMethods.forEach(function(method) { ?>
+            <?js= self.linkto(method.longname, method.name, getClass(method)) ?>
+        <?js }) ?>
+    </li>
+    <?js } ?>
+
+    <?js if (item.inheritedMethods.length) { ?>
+    <li>
+        <div class="section-header">Inherited Methods<span class="badge pull-right"><?js= item.inheritedMethods.length ?></span></div>
+        <?js item.inheritedMethods.forEach(function(method) { ?>
+            <?js= self.linkto(method.longname, method.name, getClass(method)) ?>
+        <?js }) ?>
+    </li>
+    <?js } ?>
+
+    <?js if (item.events.length) { ?>
+    <li>
+        <div class="section-header">Events<span class="badge pull-right"><?js= item.events.length ?></span></div>
+        <?js item.events.forEach(function(event) { ?>
+            <?js= self.linkto(event.longname, event.name, getClass(event)) ?>
+        <?js }) ?>
+    </li>
+    <?js } ?>
+
+    <?js if (item.privateEvents.length) { ?>
+    <li>
+        <div class="section-header">Private Events<span class="badge pull-right"><?js= item.privateEvents.length ?></span></div>
+        <?js item.privateEvents.forEach(function(event) { ?>
+            <?js= self.linkto(event.longname, event.name, getClass(event)) ?>
+        <?js }) ?>
+    </li>
+    <?js } ?>
+
+    <?js if (item.typedefs.length) { ?>
+    <li>
+        <div class="section-header">Type Definitions<span class="badge pull-right"><?js= item.typedefs.length ?></span></div>
+        <?js item.typedefs.forEach(function(type) { ?>
+            <?js= self.linkto(type.longname, type.name, getClass(type)) ?>
+        <?js }) ?>
+    </li>
+    <?js } ?>
+</ul>
+</li>

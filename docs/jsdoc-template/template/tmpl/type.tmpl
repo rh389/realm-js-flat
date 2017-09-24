@@ -1,0 +1,4 @@
+<?js= obj.map(function(type) {
+    var className = /\s/.test(type) ? '' : 'text-nowrap';
+    return '<code class="' + className + '">' + this.typelink(type) + '</code>';
+}, this).join(' or ') ?>

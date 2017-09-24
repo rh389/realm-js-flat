@@ -1,0 +1,23 @@
+<?js
+    var exceptions = obj;
+    var self = this;
+?>
+
+<div class="exceptions">
+    <ul>
+    <?js exceptions.forEach(function(e) { ?>
+        <?js if (e.type && e.type.names.length) { ?>
+            <li>
+                <?js= self.partial('type.tmpl', e.type.names) ?>
+                <?js if (e.description) { ?>
+                    <ul class="list-unstyled">
+                        <li><?js= e.description ?></li>
+                    </ul>
+                <?js } ?>
+            </li>
+        <?js } else if (e.description) { ?>
+            <li><?js= e.description ?></li>
+        <?js } ?>
+    <?js }); ?>
+    </ul>
+</div>

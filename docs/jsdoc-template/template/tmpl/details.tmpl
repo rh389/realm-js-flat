@@ -1,0 +1,49 @@
+<?js
+var data = obj;
+var self = this;
+?>
+<?js
+    var properties = data.properties;
+    if (properties && properties.length && properties.forEach) {
+?>
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl><?js= this.partial('properties.tmpl', properties) ?></dl>
+
+<?js } ?>
+
+<?js if (data.defaultvalue) {?>
+<div class="detail-content tag-default">
+    <strong>Default:</strong>
+    <?js if (!!~data.defaultvalue.indexOf('\r')) { ?>
+        <pre class="prettyprint"><code><?js= data.defaultvalue ?></code></pre>
+    <?js } else { ?>
+        <code class="prettyprint"><?js= data.defaultvalue ?></code>
+    <?js } ?>
+</div>
+<?js } ?>
+
+<?js if (data.see && see.length) {?>
+<div class="detail-content tag-see">
+    <strong class="tag-todo">See:</strong>
+    <?js var seeLinks = see.map(function(s) {
+        return self.linkto(s);
+    }).join(', '); ?>
+    <?js= seeLinks ?>
+</div>
+<?js } ?>
+
+<?js if (data.todo && todo.length) {?>
+<div class="detail-content tag-todo">
+    <strong class="tag-todo">Todo</strong>
+    <?js todo.forEach(function(t) { ?>
+        <div class="checkbox todo-item">
+            <label>
+                <input type="checkbox" disabled readonly> <?js= t ?>
+            </label>
+        </div>
+    <?js }); ?>
+</div>
+<?js } ?>
+

@@ -1,0 +1,6 @@
+node_modules/
+demo/docs/
+demo/sample/
+dump.txt
+dump.json
+.DS_Store

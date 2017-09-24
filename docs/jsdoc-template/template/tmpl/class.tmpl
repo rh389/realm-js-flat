@@ -1,0 +1,13 @@
+<?js
+    var data = obj;
+    var self = this;
+?>
+<?js if (data.deprecated === true) { ?>
+    <div class="deprecated label-danger text-center" role="alert">
+        <strong>deprecated</strong>
+    </div>
+<?js } else if (data.deprecated) { ?>
+    <div class="deprecated label-danger text-center" role="alert">
+        <strong>deprecated</strong>: <?js= data.deprecated ?>
+    </div>
+<?js } ?>

@@ -1,0 +1,61 @@
+<?js
+    var params = obj;
+    /* sort subparams under their parent params (like opts.classname) */
+    var parentParam = null;
+    params.forEach(function(param, i) {
+        if (!param) { return; }
+        if ( parentParam && param.name && param.name.indexOf(parentParam.name + '.') === 0 ) {
+            param.name = param.name.substr(parentParam.name.length+1);
+            parentParam.subparams = parentParam.subparams || [];
+            parentParam.subparams.push(param);
+            params[i] = null;
+        }
+        else {
+            parentParam = param;
+        }
+    });
+?>
+
+<?js
+    var self = this;
+    params.forEach(function(param) {
+        if (!param) { return; }
+?>
+<ul class="params">
+    <li>
+        <?js if (param.name) { ?>
+            <b><?js= param.name ?></b>
+        <?js } else { ?>
+            <b>&lt;undefined&gt;</b>
+        <?js } ?>
+
+        <?js if (param.optional) { ?>
+            <span class="optional badge">optional</span>
+        <?js } ?>
+        <?js if (param.variable) { ?>
+            <span class="repeatable badge">repeatable</span>
+        <?js } ?>
+        <?js if (param.nullable) { ?>
+            <span class="nullable badge">nullable</span>
+        <?js } ?>
+
+    </li>
+    <ul class="list-unstyled">
+        <?js if (param.type && param.type.names) { ?>
+            <li>Type: <?js= self.partial('type.tmpl', param.type.names) ?></li>
+        <?js } ?>
+
+        <?js if (typeof param.defaultvalue !== 'undefined') { ?>
+            <li>Default: <code><?js= self.htmlsafe(param.defaultvalue) ?></code></li>
+        <?js } ?>
+
+        <?js if (param.description) { ?>
+            <li><?js= param.description ?></li>
+        <?js } ?>
+
+        <?js if (param.subparams) { ?>
+            <?js= self.partial('params.tmpl', param.subparams) ?>
+        <?js } ?>
+    </ul>
+</ul>
+<?js }); ?>

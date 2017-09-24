@@ -1,0 +1,58 @@
+<?js
+    var props = obj;
+
+    /* sort subprops under their parent props (like opts.classname) */
+    var parentProp = null;
+    props.forEach(function(prop, i) {
+        if (!prop) { return; }
+        if ( parentProp && prop.name && prop.name.indexOf(parentProp.name + '.') === 0 ) {
+            prop.name = prop.name.substr(parentProp.name.length+1);
+            parentProp.subprops = parentProp.subprops || [];
+            parentProp.subprops.push(prop);
+            props[i] = null;
+        }
+        else {
+            parentProp = prop;
+        }
+    });
+?>
+
+<?js
+    var self = this;
+    props.forEach(function(prop) {
+        if (!prop) { return; }
+?>
+<ul class="properties">
+    <li>
+        <?js if (prop.name) { ?>
+            <b><?js= self.htmlsafe(prop.name) ?></b>
+        <?js } else { ?>
+            <b>&lt;undefined&gt;</b>
+        <?js } ?>
+
+        <?js if (prop.optional) { ?>
+            <span class="optional badge">optional</span>
+        <?js } ?>
+        <?js if (prop.nullable) { ?>
+            <span class="nullable badge">nullable</span>
+        <?js } ?>
+    </li>
+    <ul class="list-unstyled">
+        <?js if (prop.type && prop.type.names) { ?>
+            <li>Type: <?js= self.partial('type.tmpl', prop.type.names) ?></li>
+        <?js } ?>
+
+        <?js if (typeof prop.defaultvalue !== 'undefined') { ?>
+            <li>Default: <code><?js= self.htmlsafe(prop.defaultvalue) ?></code></li>
+        <?js } ?>
+
+        <?js if (prop.description) { ?>
+            <li><?js= prop.description ?></li>
+        <?js } ?>
+
+        <?js if (prop.subprops) { ?>
+            <?js= self.partial('properties.tmpl', prop.subprops) ?>
+        <?js } ?>
+    </ul>
+</ul>
+<?js }); ?>

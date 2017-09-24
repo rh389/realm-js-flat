@@ -1,0 +1,36 @@
+<?js
+var self = this;
+var icon = '<i class="fa fa-users fa-lg"></i>';
+?>
+<div class="brand"><a href="index.html"><?js= env.conf.templates.applicationName ?></a></div>
+<i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+<div class="search">
+    <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentation">
+    <span class="clearer fa fa-lg fa-times pull-right"></span>
+</div>
+<div id="side-bar-menu" class="menu-list">
+    <ul id="menu-content" class="menu-content collapse out">
+        <?js
+        this.nav.forEach(function(item) {
+            var childCount = (
+                item.constants.length +
+                item.members.length +
+                item.privateMembers.length +
+                item.methods.length +
+                item.inheritedMethods.length +
+                item.privateMethods.length +
+                item.events.length +
+                item.privateEvents.length +
+                item.typedefs.length
+            );
+
+            if (childCount > 0) { ?>
+                <?js= self.partial('subnav-collapse.tmpl', item) ?>
+            <?js } else { ?>
+                <li id="nav-<?js= item.longname.replace('.', '') ?>-item">
+                    <?js= self.linkto(item.longname, icon + item.longname) ?>
+                </li>
+        <?js }
+        }); ?>
+    </ul>
+ </div>
