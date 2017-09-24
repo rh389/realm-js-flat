@@ -16,7 +16,6 @@
 *.management/
 
 # core
-core
 core-*
 sync
 sync-*
